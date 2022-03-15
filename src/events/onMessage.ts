@@ -34,7 +34,11 @@ export default (event: MessageEvent) => {
               .split(" ")
               .filter((arg) => arg);
 
-            dootCommand.fn(messageData, commandArgs);
+            try {
+              dootCommand.fn(messageData, commandArgs);
+            } catch (error) {
+              console.error(error);
+            }
 
             break dootCommandLoop;
           }
