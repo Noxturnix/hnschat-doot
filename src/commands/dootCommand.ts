@@ -1,6 +1,7 @@
 import { DootCommand } from "../interfaces/dootCommand";
-import { sedMessage, sendMessage } from "../libs/hnsChat";
+import { sedMessageLog, sendMessage } from "../libs/hnsChat";
 import { sed } from "sed-lite";
+import escapeRegex from "../libs/escapeRegex";
 
 const dootCommands: DootCommand[] = [
   {
@@ -13,14 +14,31 @@ const dootCommands: DootCommand[] = [
     command: ["s/"],
     usePrefix: false,
     fn: (messageData, _args) => {
-      if (!sedMessage.has(messageData.conversation)) {
+      if (!sedMessageLog[messageData.conversation]) {
         return;
       }
 
-      let s = sed(messageData.message);
-      let replacedMessage = s(sedMessage.get(messageData.conversation));
+      let sedMessageArr = messageData.message.split(/(?<!\\)\//g);
 
-      sendMessage(messageData.conversation, "sed: " + replacedMessage);
+      if (sedMessageArr.length < 3) {
+        sendMessage(messageData.conversation, "sed error: Invalid sed script");
+        return;
+      }
+
+      let sedRegex = sedMessageArr[1];
+      let sedReplace = sedMessageArr[2];
+      let sedFlags = sedMessageArr.length >= 4 ? sedMessageArr[3].split(" ")[0] : "";
+      let s = sed(`s/${sedRegex}/${escapeRegex(sedReplace)}/${sedFlags}`);
+
+      for (let i = 0; i < sedMessageLog[messageData.conversation].length; i++) {
+        let sedMsg = sedMessageLog[messageData.conversation][i];
+        let replacedMessage = s(sedMsg);
+
+        if (replacedMessage !== sedMsg) {
+          sendMessage(messageData.conversation, "sed: " + replacedMessage);
+          break;
+        }
+      }
     }
   }
 ];

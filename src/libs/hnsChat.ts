@@ -1,6 +1,7 @@
 import { hnschatWs } from "..";
+import { HnsChatSedLog } from "../interfaces/hnsChatSedLog";
 
-export const sedMessage = new Map();
+export const sedMessageLog: HnsChatSedLog = {};
 
 export const sendMessage = (conversation: string, message: string) => {
   sendCommand("ACTION", {

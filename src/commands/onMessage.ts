@@ -1,11 +1,10 @@
 import { HnsChatMessageData } from "../interfaces/hnsChatMessageData";
-import { sedMessage } from "../libs/hnsChat";
+import { sedMessageLog } from "../libs/hnsChat";
 
 export default (messageData: HnsChatMessageData) => {
-  if (
-    !messageData.message.trim().toLowerCase().startsWith("s/") &&
-    messageData.user !== process.env.DOMAIN_ID
-  ) {
-    sedMessage.set(messageData.conversation, messageData.message);
+  if (messageData.user !== process.env.DOMAIN_ID) {
+    if (!sedMessageLog[messageData.conversation]) sedMessageLog[messageData.conversation] = [];
+    sedMessageLog[messageData.conversation].unshift(messageData.message);
+    sedMessageLog[messageData.conversation].splice(20);
   }
 };

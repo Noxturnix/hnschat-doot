@@ -11,8 +11,7 @@ export default (event: MessageEvent) => {
     case "MESSAGE":
       let messageData: HnsChatMessageData = JSON.parse(data);
       let trimmedMessage = messageData.message.trim();
-
-      onMessage(messageData);
+      let isCommand = false;
 
       dootCommandLoop: for (let i = 0; i < dootCommands.length; i++) {
         let dootCommand = dootCommands[i];
@@ -34,6 +33,8 @@ export default (event: MessageEvent) => {
               .split(" ")
               .filter((arg) => arg);
 
+            isCommand = true;
+
             try {
               dootCommand.fn(messageData, commandArgs);
             } catch (error) {
@@ -43,6 +44,10 @@ export default (event: MessageEvent) => {
             break dootCommandLoop;
           }
         }
+      }
+
+      if (!isCommand) {
+        onMessage(messageData);
       }
 
       break;
