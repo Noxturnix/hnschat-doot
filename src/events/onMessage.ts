@@ -3,9 +3,13 @@ import { HnsChatMessageData } from "../interfaces/hnsChatMessageData";
 import dootCommands from "../commands/dootCommand";
 import onMessage from "../commands/onMessage";
 
+const unentity = (str: string): string => {
+  return str.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+};
+
 export default (event: MessageEvent) => {
   let [command, ...splitedData] = event.data.toString().split(" ");
-  let data = splitedData.join(" ").replace(/&amp;/g, "&");
+  let data = unentity(unentity(splitedData.join(" ")));
 
   switch (command) {
     case "MESSAGE":
