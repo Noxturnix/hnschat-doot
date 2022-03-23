@@ -21,14 +21,18 @@ const dootCommands: DootCommand[] = [
       let sedMessageArr = messageData.message.split(/(?<!\\)\//g);
 
       if (sedMessageArr.length < 3) {
-        sendMessage(messageData.conversation, "sed error: Invalid sed script");
         return;
       }
 
       let sedRegex = sedMessageArr[1];
       let sedReplace = sedMessageArr[2];
       let sedFlags = sedMessageArr.length >= 4 ? sedMessageArr[3].split(" ")[0] : "";
-      let s = sed(`s/${sedRegex}/${escapeRegex(sedReplace)}/${sedFlags}`);
+      let s: (str: string) => string;
+      try {
+        s = sed(`s/${sedRegex}/${escapeRegex(sedReplace)}/${sedFlags}`);
+      } catch (error) {
+        return;
+      }
 
       for (let i = 0; i < sedMessageLog[messageData.conversation].length; i++) {
         let sedMsg = sedMessageLog[messageData.conversation][i];
