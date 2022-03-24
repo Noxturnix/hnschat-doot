@@ -1,4 +1,4 @@
-import { hnschatWs } from "..";
+import { hnsChatWebSocketConnection, hnschatWs } from "..";
 import { HnsChatSedLog } from "../interfaces/hnsChatSedLog";
 
 export const sedMessageLog: HnsChatSedLog = {};
@@ -13,5 +13,5 @@ export const sendMessage = (conversation: string, message: string) => {
 };
 
 export const sendCommand = (command: string, data: object) => {
-  hnschatWs.send(command + " " + JSON.stringify(data));
+  hnsChatWebSocketConnection.sendUTF(command + " " + JSON.stringify(data));
 };

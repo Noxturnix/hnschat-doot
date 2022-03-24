@@ -36,10 +36,11 @@
     "rimraf": "^3.0.2",
     "sed-lite": "^0.8.4",
     "unescape": "^1.0.1",
-    "ws": "^8.5.0"
+    "websocket": "^1.0.34"
   },
   "devDependencies": {
     "@types/node": "^16.7.4",
+    "@types/websocket": "^1.0.5",
     "@types/ws": "^8.5.3",
     "nodemon": "^2.0.12",
     "prettier": "^2.3.2",

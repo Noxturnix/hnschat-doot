@@ -1,4 +1,3 @@
-import type { MessageEvent } from "ws";
 import { HnsChatMessageData } from "../interfaces/hnsChatMessageData";
 import dootCommands from "../commands/dootCommand";
 import onMessage from "../commands/onMessage";
@@ -7,8 +6,8 @@ const unentity = (str: string): string => {
   return str.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 };
 
-export default (event: MessageEvent) => {
-  let [command, ...splitedData] = event.data.toString().split(" ");
+export default (message: string) => {
+  let [command, ...splitedData] = message.toString().split(" ");
   let data = unentity(unentity(splitedData.join(" ")));
 
   switch (command) {
