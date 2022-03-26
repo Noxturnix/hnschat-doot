@@ -4,6 +4,7 @@ import type { connection } from "websocket";
 import onClose from "./events/onClose";
 import onOpen from "./events/onOpen";
 import onMessage from "./events/onMessage";
+import onError from "./events/onError";
 
 loadEnv();
 
@@ -16,18 +17,15 @@ export let hnsChatWebSocketConnection: connection;
 
 hnschatWs.on("connectFailed", (error) => {
   console.log("Connection failed: " + error.toString());
+  process.exit(1);
 });
 
 hnschatWs.on("connect", (conn) => {
   hnsChatWebSocketConnection = conn;
 
-  conn.on("error", (error) => {
-    console.log("Connection error: " + error.toString());
-  });
+  conn.on("error", onError);
 
-  conn.on("close", (reasonCode, description) => {
-    console.log("Connection closed: ", reasonCode, description);
-  });
+  conn.on("close", onClose);
 
   conn.on("message", (message) => {
     if (message.type === "utf8") {
@@ -39,7 +37,3 @@ hnschatWs.on("connect", (conn) => {
 });
 
 hnschatWs.connect(hnsChatWebSocketUri);
-
-// hnschatWs.onclose = onClose;
-// hnschatWs.onopen = onOpen;
-// hnschatWs.onmessage = onMessage;

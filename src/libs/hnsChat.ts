@@ -1,4 +1,4 @@
-import { hnsChatWebSocketConnection, hnschatWs } from "..";
+import { hnsChatWebSocketConnection } from "..";
 import { HnsChatSedLog } from "../interfaces/hnsChatSedLog";
 
 export const sedMessageLog: HnsChatSedLog = {};

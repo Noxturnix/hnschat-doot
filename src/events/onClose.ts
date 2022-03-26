@@ -1,6 +1,4 @@
-import type { Event } from "ws";
-
-export default (event: Event) => {
-  console.error("HNSChat WebSocket connection closed");
+export default (reasonCode: number, description: string) => {
+  console.log("Connection closed:", reasonCode, description);
   process.exit(1);
 };
