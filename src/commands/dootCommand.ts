@@ -110,7 +110,6 @@ const dootCommands: DootCommand[] = [
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          console.error(error);
           if (error.code === "SELF_SIGNED_CERT_IN_CHAIN")
             sendMessage(messageData.conversation, "ERROR: DANE validation failed", messageData.id);
           else if (error.code === "ECONNRESET")
