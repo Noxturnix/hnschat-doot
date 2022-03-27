@@ -100,6 +100,7 @@ const dootCommands: DootCommand[] = [
           let addr = (resp.data as string).trim();
 
           if (
+            addr.length > 0 &&
             addr.length <= 100 &&
             !addr.replaceAll("\r\n", "\n").replaceAll("\r", "\n").includes("\n")
           )
